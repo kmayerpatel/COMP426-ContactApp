@@ -36,7 +36,7 @@ class ContactView {
         `);
 
         view_div.find('.delete_contact').on('click', async (e) => {
-            await $.ajax("http://localhost:3000/public/contacts/"+this.contact.id, {type: "DELETE"});
+            await $.ajax("http://localhost:3000/contacts/"+this.contact.id, {type: "DELETE"});
             this.curDiv.remove();
         });
 

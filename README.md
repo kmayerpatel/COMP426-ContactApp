@@ -1,2 +1,2 @@
-# Fall2019COMP426-ContactApp
+# Fall2020COMP426-ContactApp
 ContactApp Example

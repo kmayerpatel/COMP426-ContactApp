@@ -20,17 +20,14 @@ class Contact {
 
     async update() {
         let data_string = JSON.stringify({
-            data: {
-                id: this.id,
-                first: this.first,
-                last: this.last,
-                email: this.email,
-                phone: this.phone,
-                notes: this.notes
-            }
+            first: this.first,
+            last: this.last,
+            email: this.email,
+            phone: this.phone,
+            notes: this.notes
         });
 
-        let response = await $.ajax("http://localhost:3000/public/contacts/"+this.id,
+        let response = await $.ajax("http://localhost:3000/contacts/"+this.id,
         {
             type: "POST",
             dataType: "json",
@@ -42,12 +39,12 @@ class Contact {
         // Shouldn't really need to do this if things actually worked but 
         // can't hurt.
 
-        this.id = response.result.posted.id;
-        this.first = response.result.posted.first;
-        this.last = response.result.posted.last;
-        this.email = response.result.posted.email;
-        this.phone = response.result.posted.phone;
-        this.notes = response.result.posted.notes;
+        this.id = response.id;
+        this.first = response.first;
+        this.last = response.last;
+        this.email = response.email;
+        this.phone = response.phone;
+        this.notes = response.notes;
 
         // Return object now updated.
         return this;
@@ -57,22 +54,22 @@ class Contact {
 // Retrieves array of all contact ids
 
 Contact.findAll = async () => {
-    let response = await $.ajax("http://localhost:3000/public/contacts/", {type: "GET", dataType: "json"});
+    let response = await $.ajax("http://localhost:3000/contacts/", {type: "GET", dataType: "json"});
 
-    return response.result;
+    return response
 }
 
 // Retrieves Contact object given id
 
 Contact.find = async (id) => {
     try {
-        let response = await $.ajax("http://localhost:3000/public/contacts/"+id,
+        let response = await $.ajax("http://localhost:3000/contacts/"+id,
         {
             type: "GET",
             dataType: "json"
         });
 
-        return new Contact(response.result);
+        return new Contact(response);
     } catch {
         throw "No contact with id: " + id;
     }
@@ -81,19 +78,15 @@ Contact.find = async (id) => {
 // Creates new contact
 
 Contact.create = async (first, last, email, phone, notes) => {
-    let id = Contact.generate_unique_id();
     let data_string = JSON.stringify({
-        data: {
-            id: id,
-            first: first,
-            last: last,
-            email: email,
-            phone: phone,
-            notes: notes
-        }
+        first: first,
+        last: last,
+        email: email,
+        phone: phone,
+        notes: notes
     });
 
-    let response = await $.ajax("http://localhost:3000/public/contacts/"+id,
+    let response = await $.ajax("http://localhost:3000/contacts",
     {
         type: "POST",
         dataType: "json",
@@ -101,9 +94,6 @@ Contact.create = async (first, last, email, phone, notes) => {
         data: data_string
     });
 
-    return new Contact(response.result.posted);
+    return new Contact(response);
 }
 
-Contact.generate_unique_id = () => {
-    return Date.now().toString(16);
-}
