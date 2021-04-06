@@ -29,7 +29,7 @@ class Contact {
 
         let response = await $.ajax("http://localhost:3000/contacts/"+this.id,
         {
-            type: "POST",
+            type: "PUT",
             dataType: "json",
             contentType: "application/json",
             data: data_string
